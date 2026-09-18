@@ -25,11 +25,6 @@ For the live class, do this setup ahead of time and use the Foundry
 Playground UI (Build → your deployment → Playground) instead of raw
 `curl` if preferred — the requests below work identically through either.
 
-## Warm-Up: Gandalf
-
-No setup needed. Open [gandalf.lakera.ai](https://gandalf.lakera.ai) and
-let students play levels 1–3 live before touching Azure at all.
-
 ## Demo 1: Direct Prompt Injection vs. a Real Deployment
 
 **Attempt A — naive override:**
