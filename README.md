@@ -17,10 +17,14 @@ cd scripts
 ./00-setup.sh
 ```
 
-This creates a resource group, an AIServices account, and a `gpt-5-mini`
-deployment, and writes an `.env` file (`RG`, `LOC`, `AIACCT`, `ENDPOINT`,
-`KEY`) that every other script sources. Run scripts from the `scripts/`
-directory so `.env` resolves correctly.
+This creates a resource group, an AIServices account, a `gpt-5-mini`
+deployment, and a Foundry project (needed by Demo 2's Agents SDK — the
+classic Assistants API is retired), plus the RBAC role your account needs
+to use that project. It writes an `.env` file (`RG`, `LOC`, `AIACCT`,
+`ENDPOINT`, `KEY`, `PROJECT_ENDPOINT`) that every other script sources. Run
+scripts from the `scripts/` directory so `.env` resolves correctly.
+
+Wait ~30s after setup for RBAC to propagate before running Demo 2.
 
 For the live class, do this setup ahead of time and use the Foundry
 Playground UI (Build → your deployment → Playground) instead of raw
@@ -59,18 +63,15 @@ This demo builds a real Foundry Agent with File Search — an actual vector
 store and retrieval, not a hand-pasted document.
 
 ```bash
-./00b-create-project.sh          # one-time: creates a Foundry project + RBAC
 pip install -r requirements.txt
 export PROJECT_ENDPOINT=$(grep PROJECT_ENDPOINT .env | cut -d= -f2-)
 python3 03-demo2-real-agent.py
 ```
 
-The classic Assistants API (a flat chat-completion with the document pasted
-into a system message) is retired on Azure — this uses the current Foundry
-Agents SDK (`azure-ai-agents`), authenticated via `DefaultAzureCredential`
-(your `az login` session), against an actual Foundry **project** resource
-(a separate resource type from the plain AIServices account used in Demo 1
-and the Bridge demo — `00b-create-project.sh` provisions it).
+Uses the current Foundry Agents SDK (`azure-ai-agents`), authenticated via
+`DefaultAzureCredential` (your `az login` session), against the Foundry
+**project** resource created in setup (a separate resource type from the
+plain AIServices account that Demo 1 and the Bridge demo use directly).
 
 Tested result (real agent, real vector store, real retrieval):
 
